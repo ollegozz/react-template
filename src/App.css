@@ -1,5 +1,24 @@
-.App {
-  text-align: center;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+#root {
+  display: flex;
+  justify-content: center;
+}
+
+.App {
+  width: 80%;
+}
+ 
+.post {
+  display: flex;
+  padding: 15px;
+  border: 2px solid violet;
+  margin-top: 15px;
+  justify-content: space-between;
+  align-items: center;
+}
 
