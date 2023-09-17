@@ -6,9 +6,10 @@ export default function PostFilter({filter, setFilter}) {
   return (
       <div>
           <Input
+              placeholder='Поиск ...'
               value={filter.query}
               onChange={e => setFilter({...filter, query: e.target.value})}
-              placehoder='Поиск...' />
+               />
           <Select
               value={filter.sort}
               onChange={selectedSort => setFilter({...filter, sort:selectedSort})}

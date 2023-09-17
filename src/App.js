@@ -15,10 +15,7 @@ function App() {
     { id: 3, title: 'test3', body: "description" }
   ])
 
-  // const [selectedSort, setSelectedSort] = useState('')
-  // const [serchQuery, setSerchQuery] = useState('')
   const [filter, setFilter] = useState({sort: '', query: ''})
-
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost])
@@ -39,12 +36,7 @@ function App() {
     return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query))
   }, [filter.query, sortedPosts])
 
-  // const sortPosts = (sort) => {
-  //   setSelectedSort(sort)
-  //   // setPosts([...posts].sort((a, b) => a[sort].localeCompare(b[sort])))
-  // }
-
-  // const inputRef = useRef() 
+   // const inputRef = useRef() 
   // console.log(inputRef.current.value);
 
   return (
