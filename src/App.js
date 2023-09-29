@@ -5,6 +5,8 @@ import PostList from './components/PostList';
 // import Select from './components/UI/Select/Select';
 // import Input from './components/UI/Input/Input';
 import PostFilter from './components/PostFilter';
+import Modal from './components/UI/Modal/Modal';
+import Button from './components/UI/Button/Button';
 
 
 
@@ -17,8 +19,11 @@ function App() {
 
   const [filter, setFilter] = useState({sort: '', query: ''})
 
+  const [modal, setModal] = useState(false)
+
   const createPost = (newPost) => {
     setPosts([...posts, newPost])
+    setModal(false)
   }
 
   const removePost = (post) => {
@@ -41,7 +46,11 @@ function App() {
 
   return (
     <div className="App">
-      <PostForm create={createPost} />
+      <Button style={{marginTop: 15}} onClick = {() => setModal(true)}>Создать пост</Button>
+      <Modal visible={modal} setVisible={setModal}>
+        <PostForm create={createPost} />
+      </Modal>
+      
       <hr style={{ margin: '15px 0' }} />
       <PostFilter filter={filter} setFilter={setFilter}/>
       
