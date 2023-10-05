@@ -44,3 +44,20 @@
   opacity: 0;
   /* transition: opacity 500ms ease-in; */
 }
+
+.page__wraper {
+  margin: 10px 0;
+  display: flex;
+}
+
+.page {
+  cursor: pointer;
+  padding: 10px;
+  border: 1px solid violet;
+  margin: 0 3px;
+}
+
+.page__current {
+  border: 3px solid violet;
+  font-weight: 600;
+}
