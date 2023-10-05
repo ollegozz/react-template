@@ -11,15 +11,15 @@ import { usePosts } from './hooks/usePosts';
 // import axios from 'axios';
 import { useEffect } from 'react';
 import PostService from './API/PostService';
+import Loader from './components/UI/Loader/Loader';
 
 
 
 function App() {
   const [posts, setPosts] = useState([])
-
-  const [filter, setFilter] = useState({sort: '', query: ''})
-
+  const [filter, setFilter] = useState({ sort: '', query: '' })
   const [modal, setModal] = useState(false)
+  const [isPostsLoading, setIsPostsLoading] = useState(false)
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost])
@@ -27,13 +27,15 @@ function App() {
   }
 
   async function fetchPosts() {
-    const response = await PostService.getAll()
-    setPosts(response.data);
+    setIsPostsLoading(true)
+    const posts = await PostService.getAll()
+    setPosts(posts);
+    setIsPostsLoading(false)
   }
 
   useEffect(() => {
     fetchPosts()
-  },[filter])
+  }, [filter])
 
   const removePost = (post) => {
     setPosts(posts.filter(p => p.id !== post.id))
@@ -41,22 +43,27 @@ function App() {
 
   const sortedAndSearchPosts = usePosts(posts, filter.sort, filter.query)
 
-   // const inputRef = useRef() 
+  // const inputRef = useRef() 
   // console.log(inputRef.current.value);
 
   return (
     <div className="App">
-      <Button style={{marginTop: 15}} onClick = {() => setModal(true)}>Создать пост</Button>
+      <Button style={{ marginTop: 15 }} onClick={() => setModal(true)}>Создать пост</Button>
       <Modal visible={modal} setVisible={setModal}>
         <PostForm create={createPost} />
       </Modal>
-      
+
       <hr style={{ margin: '15px 0' }} />
-      <PostFilter filter={filter} setFilter={setFilter}/>
-      
-      
-        <PostList remove={removePost} posts={sortedAndSearchPosts} title={'Список постов'} />
-        
+      <PostFilter filter={filter} setFilter={setFilter} />
+
+      {isPostsLoading
+        ? <div style={{ display: 'flex', justifyContent: 'center', marginTop: 50 }}>
+          <Loader />
+        </div>
+        : <PostList remove={removePost} posts={sortedAndSearchPosts} title={'Список постов'} />
+      }
+
+
 
     </div>
   );
