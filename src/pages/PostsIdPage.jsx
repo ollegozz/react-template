@@ -9,19 +9,18 @@ export default function PostsIdPage() {
     const [post, setPost] = useState({})
     const [fetchPostByid, isLoading, error] = useFetching(async () => {
         const response = await PostService.getById(params.id)
-        setPost(response.date)
+        setPost(response.data)
     })
 
     useEffect(() => {
-        fetchPostByid(params.id)        
+        fetchPostByid(params.id)      
     },[])
 
     return (
         <div>
-            <div>PostsIdPage {params.id}</div>
             {isLoading
                 ? <Loader />
-                : <div>{post.title}</div>
+                : <div>{post.id}. {post.title}</div>
             }
 
         </div>
