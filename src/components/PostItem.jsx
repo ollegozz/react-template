@@ -14,7 +14,7 @@ export default function PostItem({ post, remove }) {
         </div>
       </div>
       <div className='post__btns'>
-        <Button onClick={() => router(`/post/${post.id}`)} >Открыть</Button>
+        <Button onClick={() => router(`/post/${post.id}`)}>Открыть</Button>
         <Button onClick={() => remove(post)}>Удалить</Button>
       </div>
     </div>
