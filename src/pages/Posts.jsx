@@ -11,6 +11,8 @@ import Loader from '../components/UI/Loader/Loader';
 import { useFetching } from '../hooks/useFetching';
 import { getPageArray, getPageCount } from '../utils/pages';
 import Pagination from '../components/UI/Pagination/Pagination';
+import { useObserser } from '../hooks/useObserver';
+import Select from '../components/UI/Select/Select';
 
 function Posts() {
     const [posts, setPosts] = useState([])
@@ -20,9 +22,6 @@ function Posts() {
     const [limit, setLimit] = useState(10)
     const [page, setPage] = useState(1)
     const lastElement = useRef()
-    const observer = useRef()
-
-
 
     const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
         const response = await PostService.getAll(limit, page)
@@ -38,21 +37,13 @@ function Posts() {
         setModal(false)
     }
 
-    useEffect(() => {
-        if (isPostsLoading) return
-        if (observer.current) observer.current.disconnect()
-        const callback = (entries, observer) => {            
-            if (entries[0].isIntersecting && page < totalPages) {
-                setPage(page + 1)
-            }
-        }
-        observer.current = new IntersectionObserver(callback);
-        observer.current.observe(lastElement.current)
-    }, [isPostsLoading])
+    useObserser(lastElement, page < totalPages, isPostsLoading, () => {
+        setPage(page + 1)
+    })
 
     useEffect(() => {
         fetchPosts(limit, page)
-    }, [page])
+    }, [page, limit])
 
     const removePost = (post) => {
         setPosts(posts.filter(p => p.id !== post.id))
@@ -72,6 +63,18 @@ function Posts() {
 
             <hr style={{ margin: '15px 0' }} />
             <PostFilter filter={filter} setFilter={setFilter} />
+            <div style={{marginTop:15}}>Колличество элементов на странице</div>
+            <Select
+                value={limit}
+                onChange={value => setLimit(value)}
+                defaultValue='Колличество элементов на странице'
+                option={[
+                    {value: 5, name: '5'},
+                    {value: 10, name: '10'},
+                    {value: 15, name: '15'},
+                    {value: -1, name: 'Показать все'}
+                ]}
+            />
             {postError &&
                 <h2>Произошла ошибка загрузки...<br /> {postError}</h2>
             }
